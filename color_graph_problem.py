@@ -16,8 +16,9 @@ class ColorGraphProblem(CSP_PROBLEM):
             return None
 
     def check_diff(self, diff, variable, assignments):
-        for constraint in variable.entaglement[2]:
+        for constraint in variable.entanglement[diff]:
             if not variable.check_variable_diff(diff, self.get_variable_at_location(constraint, assignments)):
                 return False
         return True
+
 

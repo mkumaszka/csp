@@ -22,14 +22,9 @@ class Variable:
         try:
             return abs(var.value - self.value) >= diff
         except Exception:
-            return False
+            return True
 
-variable = Variable(range(3))
-print(variable.domain_dict)
-variable.visit_value(2)
-print(variable.domain_dict)
-variable.reset_dict()
-print(variable.domain_dict)
+
 
 
 
