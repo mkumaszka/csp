@@ -1,4 +1,4 @@
-from csp_problem import CSP_PROBLEM
+from problems.csp_problem import CSP_PROBLEM
 
 class ColorGraphProblem(CSP_PROBLEM):
 
@@ -18,6 +18,12 @@ class ColorGraphProblem(CSP_PROBLEM):
     def check_diff(self, diff, variable, assignments):
         for constraint in variable.entanglement[diff]:
             if not variable.check_variable_diff(diff, self.get_variable_at_location(constraint, assignments)):
+                return False
+        return True
+
+    def is_satisfied(self,assignments):
+        for variable in assignments:
+            if variable.value is None:
                 return False
         return True
 
