@@ -2,8 +2,8 @@ from variables.variable import Variable
 
 class CSP_Variable(Variable):
 
-    def __init__(self, graph_size, location):
-        super().__init__(graph_size)
+    def __init__(self, graph_size, location, domain):
+        super().__init__(graph_size, domain)
         self.location = location
         self.entanglement = self.set_entanglements()
 
@@ -28,6 +28,10 @@ class CSP_Variable(Variable):
         except Exception:
             return True
 
+    def check_variable_diff_new_vals(self, diff, variable, value):
+        return abs(variable.value - value) >= diff
+
+
     def set_entanglements_for_locs(self, locs):
         eng_list = []
         for _x, _y in locs:
@@ -36,12 +40,24 @@ class CSP_Variable(Variable):
         return eng_list
 
     def create_new_variable(self):
-        var = CSP_Variable(self.graph_size, self.location)
+        var = CSP_Variable(self.graph_size, self.location, len(self.domain))
         if self.value is not None:
             var.value = self.value
+        var.domain = self.domain
         return var
 
-variables = []
-for x in range(4):
-    for y in range(4):
-        variables.append(CSP_Variable(4, (x, y)))
+    def restrict_domain(self, new_variable):
+        new_domain = []
+        if new_variable.location in self.locs_diff_1():
+            diff = 1
+        elif new_variable.location in self.locs_diff_2():
+            diff = 2
+        else:
+            return None
+        for val in self.domain:
+            if self.check_variable_diff_new_vals(diff, new_variable, val):
+                new_domain.append(val)
+        self.domain = new_domain
+
+
+

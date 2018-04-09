@@ -30,3 +30,7 @@ class Assignment:
         for variable in assignments:
             self.assignments.append(variable.create_new_variable())
 
+    def has_empty_domain(self):
+        emptys = list(filter(lambda var: len(var.domain) is 0,self.assignments))
+        return len(emptys) > 0
+

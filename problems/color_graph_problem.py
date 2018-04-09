@@ -21,10 +21,16 @@ class ColorGraphProblem(CSP_PROBLEM):
                 return False
         return True
 
-    def is_satisfied(self,assignments):
+    def is_satisfied(self, assignments):
         for variable in assignments:
             if variable.value is None:
                 return False
         return True
+
+    def restrict_domains_for_unassigned(self, assignments, index_of_new):
+        unassigned_variables = list(filter(lambda var: var.value is None, assignments))
+        new_variable = assignments[index_of_new]
+        for var in unassigned_variables:
+            var.restrict_domain(new_variable)
 
 

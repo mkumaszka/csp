@@ -2,8 +2,8 @@ from variables.variable import Variable
 
 class Latin_Variable(Variable):
 
-    def __init__(self, graph_size, location):
-        super().__init__(graph_size)
+    def __init__(self, graph_size, location, domain):
+        super().__init__(graph_size, domain)
         self.location = location
         self.entanglement = self.set_entanglements()
 
@@ -19,15 +19,23 @@ class Latin_Variable(Variable):
             return self.value is not variable.value
         return True
 
+    def check_variable_constraint_with_value(self, variable, new_value):
+        if variable.value is not None:
+            return new_value is not variable.value
+        return True
+
     def create_new_variable(self):
-        var = Latin_Variable(self.graph_size, self.location)
+        var = Latin_Variable(self.graph_size, self.location, len(self.domain))
         if self.value is not None:
             var.value = self.value
+        var.domain = self.domain
         return var
 
-# variables = []
-# for x in range(4):
-#     for y in range(4):
-#         variables.append(Latin_Variable(4, (x, y)))
-#
-# print("")
+    def restrict_domain(self, new_variable):
+        new_domain = []
+        if new_variable.location not in self.entanglement:
+            return None
+        for val in self.domain:
+            if self.check_variable_constraint_with_value(new_variable, val):
+                new_domain.append(val)
+        self.domain = new_domain

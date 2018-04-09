@@ -21,6 +21,10 @@ class CSP_PROBLEM:
     def is_satisfied(self, assignments):
         pass
 
+    @abstractmethod
+    def restrict_domains_for_unassigned(self, assignments, index_of_new):
+        pass
+
     def extend_variables_domain(self):
         # map(extend_var_domain, self.variables)
         for var in self.variables:
